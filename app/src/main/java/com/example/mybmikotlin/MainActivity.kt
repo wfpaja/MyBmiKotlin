@@ -56,4 +56,8 @@ class MainActivity : AppCompatActivity() {
         val check = binding.etName.length() > 0 && binding.etHeight.length() > 0 && binding.etWeight.length() > 0
         binding.btnBmi.isEnabled = check
     }
+
+//    private fun checkInputValid(): Boolean {
+//
+//    }
 }

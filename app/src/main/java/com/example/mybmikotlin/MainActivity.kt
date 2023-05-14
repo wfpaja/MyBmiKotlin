@@ -4,8 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Toast
 import androidx.activity.viewModels
+import com.example.mybmikotlin.data.Info
 import com.example.mybmikotlin.databinding.ActivityMainBinding
+import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
@@ -57,7 +60,40 @@ class MainActivity : AppCompatActivity() {
         binding.btnBmi.isEnabled = check
     }
 
-//    private fun checkInputValid(): Boolean {
+    private fun checkValidAndSend(){
+        if(checkEtEmpty()) {
+            Toast.makeText(this@MainActivity, resources.getText(R.string.input_have_empty), Toast.LENGTH_SHORT).show()
+        } else {
+//            checkValue()
+        }
+
+    }
+
+    private fun checkEtEmpty(): Boolean {
+        return binding.run {
+            etName.text.isBlank() || etHeight.text.isBlank() || etWeight.text.isBlank()
+        }
+    }
+
+//    private fun checkValue(): Boolean {
+//        binding.apply {
+//            val result = false
+//            try {
+//                val height = etHeight.text.toString().toDouble()
+//                val weight = etWeight.text.toString().toDouble()
 //
+//                if (height != 0.0 || weight != 0.0) {
+//                    viewModel.sendData(etName.text.toString(), height, weight)
+//                } else {
+//                    Toast.makeText(this@MainActivity, resources.getText(R.string.input_no_zero), Toast.LENGTH_SHORT).show()
+//                }
+//            } catch (e: Exception) {
+//                Toast.makeText(this@MainActivity, resources.getText(R.string.input_error), Toast.LENGTH_SHORT).show()
+//            }
+//        }
 //    }
+
+    private fun changeToInfo() {
+
+    }
 }

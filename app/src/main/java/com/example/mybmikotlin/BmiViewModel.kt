@@ -11,5 +11,7 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
     val thinList: LiveData<List<Info>> = infoDao.getThinList().asLiveData()
     val fatList: LiveData<List<Info>> = infoDao.getFatList().asLiveData()
 
+    fun sendData(name:String, height: Double, weight: Double) {
 
+    }
 }

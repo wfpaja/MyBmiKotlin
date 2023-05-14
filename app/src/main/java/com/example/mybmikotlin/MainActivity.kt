@@ -10,7 +10,7 @@ import com.example.mybmikotlin.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-//    private val viewModel: MyBmiViewModel by viewModels()
+    private val viewModel: BmiViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

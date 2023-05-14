@@ -18,11 +18,11 @@ interface InfoDao {
     suspend fun deleteByIds(idList: List<Long>)
 
     @Query("SELECT * FROM info WHERE bmi >= 18.5 AND bmi <24")
-    suspend fun getNormalList(): Flow<Info>
+    fun getNormalList(): Flow<List<Info>>
 
     @Query("SELECT * FROM info WHERE bmi <18.5")
-    suspend fun getThinList(): Flow<Info>
+    fun getThinList(): Flow<List<Info>>
 
     @Query("SELECT * FROM info WHERE bmi >=24")
-    suspend fun getFatList(): Flow<Info>
+    fun getFatList(): Flow<List<Info>>
 }

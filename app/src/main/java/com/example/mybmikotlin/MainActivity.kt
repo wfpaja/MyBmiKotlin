@@ -13,37 +13,22 @@ import java.lang.Exception
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-    private val viewModel: BmiViewModel by viewModels()
+    private val viewModel: BmiViewModel by viewModels {
+        BmiViewModelFactory(
+            (application as BmiApplication).database.infoDao()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        etInit()
         btnInit()
-    }
-
-    private fun etInit() {
-        binding.apply {
-            etName.addTextChangedListener(textWatcher)
-            etHeight.addTextChangedListener(textWatcher)
-            etWeight.addTextChangedListener(textWatcher)
-        }
-    }
-
-    private val textWatcher = object: TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-        override fun afterTextChanged(p0: Editable?) {
-            setBtnBmiState()
-        }
     }
 
     private fun btnInit() {
         binding.apply {
-            btnBmi.setOnClickListener {  }
+            btnBmi.setOnClickListener { checkValidAndSend() }
             btnClear.setOnClickListener {
                 etHeight.setText("")
                 etName.setText("")
@@ -62,11 +47,13 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkValidAndSend(){
         if(checkEtEmpty()) {
-            Toast.makeText(this@MainActivity, resources.getText(R.string.input_have_empty), Toast.LENGTH_SHORT).show()
+            showToast(getString(R.string.input_have_empty))
         } else {
-//            checkValue()
+            val (ok, height, weight) = getCheckValue()
+            if (ok) {
+                viewModel.sendData(binding.etName.text.toString(), height, weight)
+            }
         }
-
     }
 
     private fun checkEtEmpty(): Boolean {
@@ -75,25 +62,23 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-//    private fun checkValue(): Boolean {
-//        binding.apply {
-//            val result = false
-//            try {
-//                val height = etHeight.text.toString().toDouble()
-//                val weight = etWeight.text.toString().toDouble()
-//
-//                if (height != 0.0 || weight != 0.0) {
-//                    viewModel.sendData(etName.text.toString(), height, weight)
-//                } else {
-//                    Toast.makeText(this@MainActivity, resources.getText(R.string.input_no_zero), Toast.LENGTH_SHORT).show()
-//                }
-//            } catch (e: Exception) {
-//                Toast.makeText(this@MainActivity, resources.getText(R.string.input_error), Toast.LENGTH_SHORT).show()
-//            }
-//        }
-//    }
+    private fun getCheckValue(): Triple<Boolean, Double, Double> {
+        try {
+            val height = binding.etHeight.text.toString().toDouble()
+            val weight = binding.etWeight.text.toString().toDouble()
 
-    private fun changeToInfo() {
+            if (height != 0.0 && weight != 0.0) {
+                return Triple(true, height, weight)
+            } else {
+                showToast(getString(R.string.input_no_zero))
+            }
+        } catch (e: Exception) {
+            showToast(getString(R.string.input_error))
+        }
+        return Triple(false, 0.0, 0.0)
+    }
 
+    private fun showToast(text: String) {
+        Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
     }
 }

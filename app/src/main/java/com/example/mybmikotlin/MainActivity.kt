@@ -40,11 +40,6 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setBtnBmiState() {
-        val check = binding.etName.length() > 0 && binding.etHeight.length() > 0 && binding.etWeight.length() > 0
-        binding.btnBmi.isEnabled = check
-    }
-
     private fun checkValidAndSend(){
         if(checkEtEmpty()) {
             showToast(getString(R.string.input_have_empty))

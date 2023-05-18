@@ -2,11 +2,9 @@ package com.example.mybmikotlin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.viewModels
-import com.example.mybmikotlin.data.Info
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mybmikotlin.databinding.ActivityMainBinding
 import java.lang.Exception
 
@@ -24,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         btnInit()
+        rvInit()
     }
 
     private fun btnInit() {
@@ -38,6 +37,21 @@ class MainActivity : AppCompatActivity() {
             btnDeleteAll.setOnClickListener {  }
             btnDeleteBySelected.setOnClickListener {  }
         }
+    }
+
+    private fun rvInit() {
+        val adapter = CategoryAdapter(this, viewModel)
+        binding.rvCategory.adapter = adapter
+        viewModel.thinList.observe(this) {
+            items -> items.let{ adapter.update(Category.THIN, items)}
+        }
+        viewModel.normalList.observe(this) {
+            items -> items.let{ adapter.update(Category.NORMAL, items)}
+        }
+        viewModel.fatList.observe(this) {
+            items -> items.let{ adapter.update(Category.FAT, items)}
+        }
+        binding.rvCategory.layoutManager = LinearLayoutManager(this)
     }
 
     private fun checkValidAndSend(){

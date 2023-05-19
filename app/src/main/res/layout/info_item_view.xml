@@ -10,25 +10,25 @@
     android:gravity="center">
 
     <TextView
-        android:id="@+id/inner_tv_name"
+        android:id="@+id/tv_info_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/inner_tv_height"
+        android:id="@+id/tv_info_height"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/inner_tv_weight"
+        android:id="@+id/tv_info_weight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black" />
 
     <TextView
-        android:id="@+id/inner_tv_bmi"
+        android:id="@+id/tv_info_bmi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/black" />

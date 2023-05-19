@@ -1,32 +1,30 @@
 package com.example.mybmikotlin
 
-import android.app.Activity
 import android.content.Context
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.lifecycle.LiveData
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.mybmikotlin.data.Info
 import com.example.mybmikotlin.databinding.CategoryItemViewBinding
 
-class CategoryAdapter(private val activity: Activity, private val viewModel: BmiViewModel):
+class CategoryAdapter(private val context: Context):
     RecyclerView.Adapter<CategoryAdapter.ItemViewHolder>() {
     private val categoryList = categoryListInit()
 
 
     class ItemViewHolder(private var binding: CategoryItemViewBinding):
         ViewHolder(binding.root) {
-        fun bind(dataList: List<Info>) {
+        fun bind(data: CategoryData) {
             binding.apply {
+                tvCategory.text = String.format(data.titleText, data.infoList.size)
 
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        TODO("Not yet implemented")
+        return ItemViewHolder(CategoryItemViewBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
     override fun getItemCount(): Int {
@@ -34,19 +32,20 @@ class CategoryAdapter(private val activity: Activity, private val viewModel: Bmi
     }
 
     override fun onBindViewHolder(holder: ItemViewHolder, position: Int) {
-        TODO("Not yet implemented")
+        holder.bind(categoryList[position])
     }
 
     private fun categoryListInit(): MutableList<CategoryData> {
         val categories = arrayOf(Category.THIN, Category.NORMAL, Category.FAT)
         val titleTexts = arrayOf(
-            activity.getString(R.string.thin_format),
-            activity.getString(R.string.normal_format),
-            activity.getString(R.string.fat_format)
+            context.getString(R.string.thin_format),
+            context.getString(R.string.normal_format),
+            context.getString(R.string.fat_format)
         )
+
         val result = mutableListOf<CategoryData>()
         for (i in categories.indices) {
-            val item = CategoryData(categories[i], titleTexts[i], mutableListOf<Info>())
+            val item = CategoryData(categories[i], titleTexts[i], mutableListOf())
             result.add(item)
         }
         return result
@@ -59,19 +58,6 @@ class CategoryAdapter(private val activity: Activity, private val viewModel: Bmi
                 notifyItemChanged(i)
                 break
             }
-        }
-    }
-
-    companion object {
-        private val DiffCallback = object : DiffUtil.ItemCallback<List<Info>>() {
-            override fun areItemsTheSame(oldItem: List<Info>, newItem: List<Info>): Boolean {
-                return oldItem == newItem
-            }
-
-            override fun areContentsTheSame(oldItem: List<Info>, newItem: List<Info>): Boolean {
-                return oldItem == newItem
-            }
-
         }
     }
 }

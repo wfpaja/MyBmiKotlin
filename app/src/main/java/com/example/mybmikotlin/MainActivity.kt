@@ -40,7 +40,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun rvInit() {
-        val adapter = CategoryAdapter(this, viewModel)
+        val adapter = CategoryAdapter(baseContext)
         binding.rvCategory.adapter = adapter
         viewModel.thinList.observe(this) {
             items -> items.let{ adapter.update(Category.THIN, items)}

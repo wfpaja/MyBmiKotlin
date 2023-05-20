@@ -42,6 +42,7 @@ class MainActivity : AppCompatActivity() {
     private fun rvInit() {
         val adapter = CategoryAdapter(baseContext)
         binding.rvCategory.adapter = adapter
+        binding.rvCategory.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
         viewModel.thinList.observe(this) {
             items -> items.let{ adapter.update(Category.THIN, items)}
         }
@@ -51,7 +52,6 @@ class MainActivity : AppCompatActivity() {
         viewModel.fatList.observe(this) {
             items -> items.let{ adapter.update(Category.FAT, items)}
         }
-        binding.rvCategory.layoutManager = LinearLayoutManager(this)
     }
 
     private fun checkValidAndSend(){

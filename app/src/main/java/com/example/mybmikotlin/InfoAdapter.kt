@@ -7,7 +7,7 @@ import com.example.mybmikotlin.data.Info
 import com.example.mybmikotlin.databinding.InfoItemViewBinding
 
 class InfoAdapter: RecyclerView.Adapter<InfoAdapter.ItemViewHolder>() {
-    private val infoList= mutableListOf<Info>()
+    private var infoList= listOf<Info>()
     class ItemViewHolder(private val binding: InfoItemViewBinding):
         RecyclerView.ViewHolder(binding.root) {
         fun bind(data: Info) {
@@ -20,8 +20,13 @@ class InfoAdapter: RecyclerView.Adapter<InfoAdapter.ItemViewHolder>() {
         }
     }
 
+    fun setData(data: List<Info>) {
+        infoList = data
+        notifyDataSetChanged()
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(InfoItemViewBinding.inflate(LayoutInflater.from(parent.context)))
+        return ItemViewHolder(InfoItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun getItemCount(): Int {

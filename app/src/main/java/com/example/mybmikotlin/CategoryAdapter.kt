@@ -15,16 +15,19 @@ class CategoryAdapter(private val context: Context):
 
     class ItemViewHolder(private var binding: CategoryItemViewBinding):
         ViewHolder(binding.root) {
+        private val adapter = InfoAdapter()
         fun bind(data: CategoryData) {
             binding.apply {
                 tvCategory.text = String.format(data.titleText, data.infoList.size)
-
+                rvMemberList.adapter = adapter
+                adapter.setData(data.infoList)
+//                adapter.notifyDataSetChanged()
             }
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(CategoryItemViewBinding.inflate(LayoutInflater.from(parent.context)))
+        return ItemViewHolder(CategoryItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false))
     }
 
     override fun getItemCount(): Int {

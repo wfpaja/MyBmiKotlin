@@ -22,7 +22,6 @@ class InfoAdapter: RecyclerView.Adapter<InfoAdapter.ItemViewHolder>() {
 
     fun setData(data: List<Info>) {
         infoList = data
-        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {

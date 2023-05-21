@@ -21,7 +21,6 @@ class CategoryAdapter(private val context: Context):
                 tvCategory.text = String.format(data.titleText, data.infoList.size)
                 rvMemberList.adapter = adapter
                 adapter.setData(data.infoList)
-//                adapter.notifyDataSetChanged()
             }
         }
     }

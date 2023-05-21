@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
+import androidx.lifecycle.distinctUntilChanged
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.mybmikotlin.data.Info
@@ -12,9 +13,9 @@ import kotlinx.coroutines.launch
 import kotlin.math.pow
 
 class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
-    val normalList: LiveData<List<Info>> = infoDao.getNormalList().asLiveData()
-    val thinList: LiveData<List<Info>> = infoDao.getThinList().asLiveData()
-    val fatList: LiveData<List<Info>> = infoDao.getFatList().asLiveData()
+    val normalList: LiveData<List<Info>> = infoDao.getNormalList().asLiveData().distinctUntilChanged()
+    val thinList: LiveData<List<Info>> = infoDao.getThinList().asLiveData().distinctUntilChanged()
+    val fatList: LiveData<List<Info>> = infoDao.getFatList().asLiveData().distinctUntilChanged()
 
     fun sendData(name:String, height: Double, weight: Double) {
         val id = System.currentTimeMillis()
@@ -22,6 +23,12 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
         val info = Info(id, name, height, weight, bmi)
         viewModelScope.launch {
             infoDao.insert(info)
+        }
+    }
+
+    fun deleteAll() {
+        viewModelScope.launch {
+            infoDao.deleteAll()
         }
     }
 

@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
                 etWeight.setText("")
                 tvBmi.text = ""
             }
-            btnDeleteAll.setOnClickListener {  }
+            btnDeleteAll.setOnClickListener { viewModel.deleteAll() }
             btnDeleteBySelected.setOnClickListener {  }
         }
     }

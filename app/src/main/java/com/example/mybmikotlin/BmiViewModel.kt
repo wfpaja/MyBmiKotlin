@@ -1,10 +1,12 @@
 package com.example.mybmikotlin
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.asLiveData
 import androidx.lifecycle.distinctUntilChanged
+import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import androidx.lifecycle.viewmodel.CreationExtras
 import com.example.mybmikotlin.data.Info
@@ -16,6 +18,8 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
     val normalList: LiveData<List<Info>> = infoDao.getNormalList().asLiveData().distinctUntilChanged()
     val thinList: LiveData<List<Info>> = infoDao.getThinList().asLiveData().distinctUntilChanged()
     val fatList: LiveData<List<Info>> = infoDao.getFatList().asLiveData().distinctUntilChanged()
+    private val selectedSet = hashSetOf<Long>()
+    val selectedCount = MutableLiveData(0)
 
     fun sendData(name:String, height: Double, weight: Double) {
         val id = System.currentTimeMillis()
@@ -31,6 +35,20 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
             infoDao.deleteAll()
         }
     }
+
+    fun changeSelected(id: Long): Boolean {
+        var result = true
+        if (selectedSet.contains(id)) {
+            selectedSet.remove(id)
+            result = false
+        } else {
+            selectedSet.add(id)
+        }
+        selectedCount.value = selectedSet.size
+        return result
+    }
+
+    fun checkSelected(id: Long) = selectedSet.contains(id)
 
 }
 

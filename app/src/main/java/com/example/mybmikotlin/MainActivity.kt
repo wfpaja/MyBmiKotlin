@@ -23,6 +23,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         btnInit()
         rvInit()
+        viewModel.selectedCount.observe(this) {
+            count -> count.let { binding.btnDeleteBySelected.isEnabled = count > 0 }
+        }
     }
 
     private fun btnInit() {
@@ -40,7 +43,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun rvInit() {
-        val adapter = CategoryAdapter(baseContext)
+        val adapter = CategoryAdapter(baseContext, viewModel)
         binding.rvCategory.adapter = adapter
         binding.rvCategory.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
         viewModel.thinList.observe(this) {

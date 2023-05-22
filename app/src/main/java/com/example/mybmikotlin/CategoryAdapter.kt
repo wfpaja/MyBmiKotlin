@@ -8,14 +8,14 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.mybmikotlin.data.Info
 import com.example.mybmikotlin.databinding.CategoryItemViewBinding
 
-class CategoryAdapter(private val context: Context):
+class CategoryAdapter(context: Context, private val viewModel: BmiViewModel):
     RecyclerView.Adapter<CategoryAdapter.ItemViewHolder>() {
-    private val categoryList = categoryListInit()
+    private val categoryList = categoryListInit(context)
 
 
-    class ItemViewHolder(private var binding: CategoryItemViewBinding):
+    class ItemViewHolder(private var binding: CategoryItemViewBinding, context: Context, viewModel: BmiViewModel):
         ViewHolder(binding.root) {
-        private val adapter = InfoAdapter()
+        private val adapter = InfoAdapter(context, viewModel)
         fun bind(data: CategoryData) {
             binding.apply {
                 tvCategory.text = String.format(data.titleText, data.infoList.size)
@@ -26,7 +26,11 @@ class CategoryAdapter(private val context: Context):
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
-        return ItemViewHolder(CategoryItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false))
+        return ItemViewHolder(
+            CategoryItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+            parent.context,
+            viewModel
+        )
     }
 
     override fun getItemCount(): Int {
@@ -37,7 +41,7 @@ class CategoryAdapter(private val context: Context):
         holder.bind(categoryList[position])
     }
 
-    private fun categoryListInit(): MutableList<CategoryData> {
+    private fun categoryListInit(context: Context): MutableList<CategoryData> {
         val categories = arrayOf(Category.THIN, Category.NORMAL, Category.FAT)
         val titleTexts = arrayOf(
             context.getString(R.string.thin_format),

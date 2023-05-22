@@ -2,62 +2,95 @@ package com.example.mybmikotlin
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.text.Editable
-import android.text.TextWatcher
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mybmikotlin.databinding.ActivityMainBinding
+import java.lang.Exception
 
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
-//    private val viewModel: MyBmiViewModel by viewModels()
+    private val viewModel: BmiViewModel by viewModels {
+        BmiViewModelFactory(
+            (application as BmiApplication).database.infoDao()
+        )
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        etInit()
         btnInit()
-    }
-
-    private fun etInit() {
-        binding.apply {
-            etName.addTextChangedListener(textWatcher)
-            etHeight.addTextChangedListener(textWatcher)
-            etWeight.addTextChangedListener(textWatcher)
-        }
-    }
-
-    private val textWatcher = object: TextWatcher {
-        override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-        override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {}
-
-        override fun afterTextChanged(p0: Editable?) {
-            setBtnBmiState()
+        rvInit()
+        viewModel.selectedCount.observe(this) {
+            count -> count.let { binding.btnDeleteBySelected.isEnabled = count > 0 }
         }
     }
 
     private fun btnInit() {
         binding.apply {
-            btnBmi.setOnClickListener {  }
+            btnBmi.setOnClickListener { checkValidAndSend() }
             btnClear.setOnClickListener {
                 etHeight.setText("")
                 etName.setText("")
                 etWeight.setText("")
                 tvBmi.text = ""
             }
-            btnDeleteAll.setOnClickListener {  }
+            btnDeleteAll.setOnClickListener { viewModel.deleteAll() }
             btnDeleteBySelected.setOnClickListener {  }
         }
     }
 
-    private fun setBtnBmiState() {
-        val check = binding.etName.length() > 0 && binding.etHeight.length() > 0 && binding.etWeight.length() > 0
-        binding.btnBmi.isEnabled = check
+    private fun rvInit() {
+        val adapter = CategoryAdapter(baseContext, viewModel)
+        binding.rvCategory.adapter = adapter
+        binding.rvCategory.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
+        viewModel.thinList.observe(this) {
+            items -> items.let{ adapter.update(Category.THIN, items)}
+        }
+        viewModel.normalList.observe(this) {
+            items -> items.let{ adapter.update(Category.NORMAL, items)}
+        }
+        viewModel.fatList.observe(this) {
+            items -> items.let{ adapter.update(Category.FAT, items)}
+        }
     }
 
-//    private fun checkInputValid(): Boolean {
-//
-//    }
+    private fun checkValidAndSend(){
+        if(checkEtEmpty()) {
+            showToast(getString(R.string.input_have_empty))
+        } else {
+            val (ok, height, weight) = getCheckValue()
+            if (ok) {
+                viewModel.sendData(binding.etName.text.toString(), height, weight)
+            }
+        }
+    }
+
+    private fun checkEtEmpty(): Boolean {
+        return binding.run {
+            etName.text.isBlank() || etHeight.text.isBlank() || etWeight.text.isBlank()
+        }
+    }
+
+    private fun getCheckValue(): Triple<Boolean, Double, Double> {
+        try {
+            val height = binding.etHeight.text.toString().toDouble()
+            val weight = binding.etWeight.text.toString().toDouble()
+
+            if (height != 0.0 && weight != 0.0) {
+                return Triple(true, height, weight)
+            } else {
+                showToast(getString(R.string.input_no_zero))
+            }
+        } catch (e: Exception) {
+            showToast(getString(R.string.input_error))
+        }
+        return Triple(false, 0.0, 0.0)
+    }
+
+    private fun showToast(text: String) {
+        Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
+    }
 }

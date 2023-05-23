@@ -8,6 +8,7 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mybmikotlin.data.Info
 import com.example.mybmikotlin.databinding.InfoItemViewBinding
+import java.text.DecimalFormat
 
 class InfoAdapter(private val context: Context, private val viewModel: BmiViewModel): RecyclerView.Adapter<InfoAdapter.ItemViewHolder>() {
     private var infoList= listOf<Info>()
@@ -16,11 +17,12 @@ class InfoAdapter(private val context: Context, private val viewModel: BmiViewMo
         fun bind(data: Info) {
             binding.apply {
                 tvInfoName.text = data.name
-                tvInfoHeight.text = data.height.toString()
-                tvInfoWeight.text = data.weight.toString()
-                tvInfoBmi.text = data.bmi.toString()
+                tvInfoHeight.text = getFormatText(data.height)
+                tvInfoWeight.text = getFormatText(data.weight)
+                tvInfoBmi.text = getFormatText(data.bmi)
             }
         }
+        private fun getFormatText(bmi: Double): String = DecimalFormat("0.##").format(bmi)
     }
 
     fun setData(data: List<Info>) {

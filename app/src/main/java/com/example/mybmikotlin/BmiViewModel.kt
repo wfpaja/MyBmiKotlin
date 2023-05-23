@@ -20,6 +20,7 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
     val fatList: LiveData<List<Info>> = infoDao.getFatList().asLiveData().distinctUntilChanged()
     private val selectedSet = hashSetOf<Long>()
     val selectedCount = MutableLiveData(0)
+    val bmiResult = MutableLiveData(0.0)
 
     fun sendData(name:String, height: Double, weight: Double) {
         val id = System.currentTimeMillis()
@@ -28,6 +29,7 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
         viewModelScope.launch {
             infoDao.insert(info)
         }
+        bmiResult.value = bmi
     }
 
     fun deleteAll() {
@@ -49,6 +51,13 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
     }
 
     fun checkSelected(id: Long) = selectedSet.contains(id)
+
+    fun deleteByIds() {
+        val ids = selectedSet.toList()
+        viewModelScope.launch {
+            infoDao.deleteByIds(ids)
+        }
+    }
 
 }
 

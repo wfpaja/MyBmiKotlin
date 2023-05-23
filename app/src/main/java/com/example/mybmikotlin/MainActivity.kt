@@ -1,12 +1,12 @@
 package com.example.mybmikotlin
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mybmikotlin.databinding.ActivityMainBinding
-import java.lang.Exception
+import java.text.DecimalFormat
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,7 +24,10 @@ class MainActivity : AppCompatActivity() {
         btnInit()
         rvInit()
         viewModel.selectedCount.observe(this) {
-            count -> count.let { binding.btnDeleteBySelected.isEnabled = count > 0 }
+            count -> binding.btnDeleteBySelected.isEnabled = count > 0
+        }
+        viewModel.bmiResult.observe(this) {
+            bmi -> setTvBmi(bmi)
         }
     }
 
@@ -38,7 +41,7 @@ class MainActivity : AppCompatActivity() {
                 tvBmi.text = ""
             }
             btnDeleteAll.setOnClickListener { viewModel.deleteAll() }
-            btnDeleteBySelected.setOnClickListener {  }
+            btnDeleteBySelected.setOnClickListener { viewModel.deleteByIds() }
         }
     }
 
@@ -47,13 +50,13 @@ class MainActivity : AppCompatActivity() {
         binding.rvCategory.adapter = adapter
         binding.rvCategory.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
         viewModel.thinList.observe(this) {
-            items -> items.let{ adapter.update(Category.THIN, items)}
+            items -> adapter.update(Category.THIN, items)
         }
         viewModel.normalList.observe(this) {
-            items -> items.let{ adapter.update(Category.NORMAL, items)}
+            items -> adapter.update(Category.NORMAL, items)
         }
         viewModel.fatList.observe(this) {
-            items -> items.let{ adapter.update(Category.FAT, items)}
+            items -> adapter.update(Category.FAT, items)
         }
     }
 
@@ -91,6 +94,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun showToast(text: String) {
-        Toast.makeText(this@MainActivity, text, Toast.LENGTH_SHORT).show()
+        Toast.makeText(this, text, Toast.LENGTH_SHORT).show()
+    }
+
+    private fun setTvBmi(bmi: Double) {
+        val df = DecimalFormat("0.##")
+        binding.tvBmi.text = df.format(bmi)
     }
 }

@@ -20,4 +20,6 @@
     <string name="delete_by_selected_text">刪除已選</string>
     <string name="clear_text">清除</string>
     <string name="input_error">輸入的數值有誤，請重新輸入</string>
+    <string name="modify_text">修改</string>
+    <string name="cancel_text">取消</string>
 </resources>

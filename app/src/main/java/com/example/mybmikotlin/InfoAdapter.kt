@@ -1,13 +1,19 @@
 package com.example.mybmikotlin
 
+import android.app.Activity
+import android.app.Dialog
 import android.content.Context
+import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.content.res.AppCompatResources
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.RecyclerView
 import com.example.mybmikotlin.data.Info
 import com.example.mybmikotlin.databinding.InfoItemViewBinding
+import com.example.mybmikotlin.databinding.ModifyInfoDialogBinding
 import java.text.DecimalFormat
 
 class InfoAdapter(private val context: Context, private val viewModel: BmiViewModel): RecyclerView.Adapter<InfoAdapter.ItemViewHolder>() {
@@ -41,7 +47,10 @@ class InfoAdapter(private val context: Context, private val viewModel: BmiViewMo
         val itemData = infoList[position]
         holder.bind(itemData)
         holder.itemView.setOnClickListener { changeSelectBackground(it, viewModel.changeSelected(itemData.id)) }
-        holder.itemView.setOnLongClickListener { true }
+        holder.itemView.setOnLongClickListener {
+            val dialog = ModifyInfoDialogFragment(context)
+            
+            true }
         changeSelectBackground(holder.itemView, viewModel.checkSelected(itemData.id))
     }
 
@@ -51,5 +60,17 @@ class InfoAdapter(private val context: Context, private val viewModel: BmiViewMo
         } else {
             view.background = AppCompatResources.getDrawable(context, R.drawable.tv_border)
         }
+    }
+}
+
+class ModifyInfoDialogFragment(context: Context): DialogFragment() {
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return context?.let {
+            val builder = AlertDialog.Builder(it)
+            val inflater = requireActivity().layoutInflater
+            val binding = ModifyInfoDialogBinding.inflate(inflater)
+            builder.setView(binding.root)
+            builder.create()
+        }?: throw IllegalStateException("Activity cannot be null")
     }
 }

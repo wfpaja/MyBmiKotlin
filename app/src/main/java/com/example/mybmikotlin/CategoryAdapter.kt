@@ -3,19 +3,20 @@ package com.example.mybmikotlin
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import com.example.mybmikotlin.data.Info
 import com.example.mybmikotlin.databinding.CategoryItemViewBinding
 
-class CategoryAdapter(context: Context, private val viewModel: BmiViewModel):
+class CategoryAdapter(private val activity: AppCompatActivity, private val viewModel: BmiViewModel):
     RecyclerView.Adapter<CategoryAdapter.ItemViewHolder>() {
-    private val categoryList = categoryListInit(context)
+    private val categoryList = categoryListInit(activity.baseContext)
 
 
-    class ItemViewHolder(private var binding: CategoryItemViewBinding, context: Context, viewModel: BmiViewModel):
+    class ItemViewHolder(private var binding: CategoryItemViewBinding, activity: AppCompatActivity, viewModel: BmiViewModel):
         ViewHolder(binding.root) {
-        private val adapter = InfoAdapter(context, viewModel)
+        private val adapter = InfoAdapter(activity, viewModel)
         fun bind(data: CategoryData) {
             binding.apply {
                 tvCategory.text = String.format(data.titleText, data.infoList.size)
@@ -28,7 +29,7 @@ class CategoryAdapter(context: Context, private val viewModel: BmiViewModel):
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ItemViewHolder {
         return ItemViewHolder(
             CategoryItemViewBinding.inflate(LayoutInflater.from(parent.context), parent, false),
-            parent.context,
+            activity,
             viewModel
         )
     }

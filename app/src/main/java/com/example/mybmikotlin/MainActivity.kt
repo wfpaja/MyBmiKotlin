@@ -46,7 +46,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun rvInit() {
-        val adapter = CategoryAdapter(baseContext, viewModel)
+        val adapter = CategoryAdapter(this, viewModel)
         binding.rvCategory.adapter = adapter
         binding.rvCategory.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
         viewModel.thinList.observe(this) {

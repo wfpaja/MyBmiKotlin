@@ -23,13 +23,22 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
     val bmiResult = MutableLiveData(0.0)
 
     fun sendData(name:String, height: Double, weight: Double) {
-        val id = System.currentTimeMillis()
-        val bmi = weight / (height / 100).pow(2)
-        val info = Info(id, name, height, weight, bmi)
+        val info = createInfo(null, name, height, weight)
         viewModelScope.launch {
             infoDao.insert(info)
         }
-        bmiResult.value = bmi
+        bmiResult.value = info.bmi
+    }
+
+    private fun createInfo(id:Long?, name:String, height: Double, weight: Double): Info {
+        val bmiId = id ?: System.currentTimeMillis()
+        val bmi = weight / (height / 100).pow(2)
+        return Info(bmiId, name, height, weight, bmi)
+    }
+
+    fun update(id: Long, name: String, height: Double, weight: Double) {
+        val info = createInfo(id, name, height, weight)
+
     }
 
     fun deleteAll() {

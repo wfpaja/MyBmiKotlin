@@ -18,8 +18,10 @@
     <string name="input_no_zero">輸入值不得為0</string>
     <string name="clear_all_text">刪除全部</string>
     <string name="delete_by_selected_text">刪除已選</string>
+    <string name="selected_format">已選: %d</string>
     <string name="clear_text">清除</string>
     <string name="input_error">輸入的數值有誤，請重新輸入</string>
-    <string name="modify_text">修改</string>
+    <string name="modify_info_text">修改資訊</string>
     <string name="cancel_text">取消</string>
+    <string name="confirm">確定</string>
 </resources>

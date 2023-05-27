@@ -24,7 +24,11 @@ class MainActivity : AppCompatActivity() {
         btnInit()
         rvInit()
         viewModel.selectedCount.observe(this) {
-            count -> binding.btnDeleteBySelected.isEnabled = count > 0
+            count -> count.run {
+                binding.btnDeleteBySelected.isEnabled = count > 0
+                binding.tvSelectedCount.text = String.format(getString(R.string.selected_format), count)
+            }
+
         }
         viewModel.bmiResult.observe(this) {
             bmi -> setTvBmi(bmi)

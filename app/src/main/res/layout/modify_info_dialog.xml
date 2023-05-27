@@ -8,26 +8,50 @@
     android:background="@drawable/tv_border">
 
     <TextView
+        android:id="@+id/tv_modify_title"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:text="@string/modify_info_text"
+        android:textSize="20sp"
+        android:textColor="@color/teal_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_modify_title" />
+
+    <TextView
         android:id="@+id/tv_modify_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:text="@string/name_text"
+        app:layout_constraintBottom_toBottomOf="@+id/et_modify_name"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/et_modify_name" />
 
     <EditText
         android:id="@+id/et_modify_name"
+        style="@style/et_bmi_name"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
         android:layout_marginStart="16dp"
         android:autofillHints=""
-        style="@style/et_bmi_name"
         android:hint="@string/et_name_hint"
-        app:layout_constraintBottom_toBottomOf="@+id/tv_modify_name"
         app:layout_constraintStart_toEndOf="@+id/tv_modify_name"
-        app:layout_constraintTop_toTopOf="@+id/tv_modify_name" />
+        app:layout_constraintTop_toBottomOf="@id/divider2"/>
 
     <TextView
         android:id="@+id/tv_modify_height"
@@ -89,7 +113,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
-        android:text="@string/modify_text"
+        android:text="@string/confirm"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline2"
         app:layout_constraintStart_toStartOf="parent"

@@ -38,7 +38,9 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
 
     fun update(id: Long, name: String, height: Double, weight: Double) {
         val info = createInfo(id, name, height, weight)
-
+        viewModelScope.launch {
+            infoDao.update(info)
+        }
     }
 
     fun deleteAll() {

@@ -115,7 +115,7 @@
         android:layout_marginTop="24dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_delete_all"
+        app:layout_constraintBottom_toTopOf="@+id/tv_selected_count"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_bmi" />
@@ -124,18 +124,28 @@
         android:id="@+id/btn_delete_all"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:text="@string/clear_all_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/btn_delete_by_selected"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent" />
 
+    <TextView
+        android:id="@+id/tv_selected_count"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:textSize="16sp"
+        android:text="@string/selected_format"
+        app:layout_constraintBottom_toTopOf="@+id/btn_delete_by_selected"
+        app:layout_constraintStart_toStartOf="@+id/btn_delete_by_selected" />
+
     <Button
         android:id="@+id/btn_delete_by_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="16dp"
         android:enabled="false"
         android:text="@string/delete_by_selected_text"
         app:layout_constraintBottom_toBottomOf="parent"

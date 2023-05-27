@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <style name="et_bmi_number">
-        <item name="android:maxLength">5</item>
+        <item name="android:maxLength">6</item>
         <item name="android:textColorHint">#757575</item>
         <item name="android:inputType">numberDecimal</item>
         <item name="minHeight">48dp</item>
     </style>
 
     <style name="et_bmi_name" parent="et_bmi_number">
-        <item name="android:maxLength">8</item>
         <item name="android:inputType">textPersonName</item>
     </style>
 </resources>

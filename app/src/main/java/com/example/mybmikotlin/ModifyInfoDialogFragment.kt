@@ -34,6 +34,7 @@ class ModifyInfoDialogFragment(private val info: Info, private val viewModel: Bm
                 if (check.first) {
                     viewModel.update(info.id, etModifyName.text.toString(), check.second, check.third)
                     dialog?.cancel()
+                    showToast(getString(R.string.modify_success))
                 }
             }
             btCancel.setOnClickListener { dialog?.cancel() }

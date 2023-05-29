@@ -61,9 +61,9 @@ class InfoAdapter(private val activity: AppCompatActivity, private val viewModel
 
     private fun changeSelectBackground(view:View, selected: Boolean) {
         if (selected) {
-            view.background = AppCompatResources.getDrawable(activity.baseContext, R.drawable.tv_border_selected)
+            view.background = AppCompatResources.getDrawable(activity, R.drawable.tv_border_selected)
         } else {
-            view.background = AppCompatResources.getDrawable(activity.baseContext, R.drawable.tv_border)
+            view.background = AppCompatResources.getDrawable(activity, R.drawable.tv_border)
         }
     }
 }

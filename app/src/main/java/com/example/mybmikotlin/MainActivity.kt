@@ -6,6 +6,7 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.mybmikotlin.databinding.ActivityMainBinding
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.DecimalFormat
 
 
@@ -44,15 +45,15 @@ class MainActivity : AppCompatActivity() {
                 etWeight.setText("")
                 tvBmi.text = ""
             }
-            btnDeleteAll.setOnClickListener { viewModel.deleteAll() }
-            btnDeleteBySelected.setOnClickListener { viewModel.deleteByIds() }
+            btnDeleteAll.setOnClickListener { showConfirmDialog(true) }
+            btnDeleteBySelected.setOnClickListener { showConfirmDialog(false) }
         }
     }
 
     private fun rvInit() {
         val adapter = CategoryAdapter(this, viewModel)
         binding.rvCategory.adapter = adapter
-        binding.rvCategory.layoutManager = LinearLayoutManager(baseContext, LinearLayoutManager.VERTICAL, false)
+        binding.rvCategory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         viewModel.thinList.observe(this) {
             items -> adapter.update(Category.THIN, items)
         }
@@ -104,5 +105,18 @@ class MainActivity : AppCompatActivity() {
     private fun setTvBmi(bmi: Double) {
         val df = DecimalFormat("0.##")
         binding.tvBmi.text = df.format(bmi)
+    }
+
+    private fun showConfirmDialog(isAll: Boolean) {
+        MaterialAlertDialogBuilder(this)
+            .setTitle(getString(R.string.attention_text))
+            .setMessage(
+                if(isAll) getString(R.string.delete_all_question)
+                else getString(R.string.delete_by_id_question)
+            )
+            .setCancelable(false)
+            .setNegativeButton(getString(R.string.cancel_text)) {dialog, _ -> dialog.cancel()}
+            .setPositiveButton(getString(R.string.confirm)) {_, _ -> if (isAll) viewModel.deleteAll() else viewModel.deleteByIds()}
+            .show()
     }
 }

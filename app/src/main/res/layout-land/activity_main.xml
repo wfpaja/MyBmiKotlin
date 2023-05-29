@@ -107,6 +107,7 @@
         android:background="@drawable/tv_border"
         android:gravity="center"
         android:textColor="@color/black"
+        android:maxLength="6"
         app:layout_constraintBottom_toBottomOf="@+id/btn_bmi"
         app:layout_constraintEnd_toStartOf="@+id/rv_category"
         app:layout_constraintHorizontal_bias="0.5"

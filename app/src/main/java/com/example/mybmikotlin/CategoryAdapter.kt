@@ -11,7 +11,7 @@ import com.example.mybmikotlin.databinding.CategoryItemViewBinding
 
 class CategoryAdapter(private val activity: AppCompatActivity, private val viewModel: BmiViewModel):
     RecyclerView.Adapter<CategoryAdapter.ItemViewHolder>() {
-    private val categoryList = categoryListInit(activity.baseContext)
+    private val categoryList = categoryListInit(activity)
 
 
     class ItemViewHolder(private var binding: CategoryItemViewBinding, activity: AppCompatActivity, viewModel: BmiViewModel):

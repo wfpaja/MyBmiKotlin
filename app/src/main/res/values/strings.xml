@@ -15,7 +15,7 @@
     <string name="normal_format">標準: %d 位   (18.5 &lt;= BMI &lt; 24)</string>
     <string name="fat_format">過胖: %d 位   (BMI &gt;= 24) </string>
     <string name="input_have_empty">輸入有空值</string>
-    <string name="input_no_zero">輸入值不得為0</string>
+    <string name="input_condition">輸入值不得小於1</string>
     <string name="clear_all_text">刪除全部</string>
     <string name="delete_by_selected_text">刪除已選</string>
     <string name="selected_format">已選: %d</string>

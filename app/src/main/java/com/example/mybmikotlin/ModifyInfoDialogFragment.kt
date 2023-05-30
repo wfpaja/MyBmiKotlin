@@ -64,7 +64,7 @@ class ModifyInfoDialogFragment(private val info: Info, private val viewModel: Bm
             if (height != 0.0 && weight != 0.0) {
                 return Triple(true, height, weight)
             } else {
-                showToast(getString(R.string.input_no_zero))
+                showToast(getString(R.string.input_condition))
             }
         } catch (e: Exception) {
             showToast(getString(R.string.input_error))

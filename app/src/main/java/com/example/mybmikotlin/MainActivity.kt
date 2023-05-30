@@ -1,10 +1,12 @@
 package com.example.mybmikotlin
 
 import android.os.Bundle
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.mybmikotlin.data.Info
 import com.example.mybmikotlin.databinding.ActivityMainBinding
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import java.text.DecimalFormat
@@ -12,6 +14,7 @@ import java.text.DecimalFormat
 
 class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
+    private var countMap = hashMapOf(Category.THIN to 0, Category.NORMAL to 0, Category.FAT to 0)
     private val viewModel: BmiViewModel by viewModels {
         BmiViewModelFactory(
             (application as BmiApplication).database.infoDao()
@@ -29,7 +32,6 @@ class MainActivity : AppCompatActivity() {
                 binding.btnDeleteBySelected.isEnabled = count > 0
                 binding.tvSelectedCount.text = String.format(getString(R.string.selected_format), count)
             }
-
         }
         viewModel.bmiResult.observe(this) {
             bmi -> setTvBmi(bmi)
@@ -38,7 +40,10 @@ class MainActivity : AppCompatActivity() {
 
     private fun btnInit() {
         binding.apply {
-            btnBmi.setOnClickListener { checkValidAndSend() }
+            btnBmi.setOnClickListener {
+                hideKeyboard()
+                checkValidAndSend()
+            }
             btnClear.setOnClickListener {
                 etHeight.setText("")
                 etName.setText("")
@@ -55,14 +60,25 @@ class MainActivity : AppCompatActivity() {
         binding.rvCategory.adapter = adapter
         binding.rvCategory.layoutManager = LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
         viewModel.thinList.observe(this) {
-            items -> adapter.update(Category.THIN, items)
+            items -> processingList(adapter, Category.THIN, items )
         }
         viewModel.normalList.observe(this) {
-            items -> adapter.update(Category.NORMAL, items)
+            items -> processingList(adapter, Category.NORMAL, items)
         }
         viewModel.fatList.observe(this) {
-            items -> adapter.update(Category.FAT, items)
+            items -> processingList(adapter, Category.FAT, items )
         }
+    }
+
+    private fun hideKeyboard() {
+        val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
+    }
+
+    private fun processingList(adapter: CategoryAdapter, category: Category,infoList: List<Info> ) {
+        adapter.update(category, infoList)
+        countMap[category] = infoList.size
+        binding.btnDeleteAll.isEnabled = countMap.values.sum() > 0
     }
 
     private fun checkValidAndSend(){
@@ -87,10 +103,10 @@ class MainActivity : AppCompatActivity() {
             val height = binding.etHeight.text.toString().toDouble()
             val weight = binding.etWeight.text.toString().toDouble()
 
-            if (height != 0.0 && weight != 0.0) {
+            if (height >= 1 && weight >= 1) {
                 return Triple(true, height, weight)
             } else {
-                showToast(getString(R.string.input_no_zero))
+                showToast(getString(R.string.input_condition))
             }
         } catch (e: Exception) {
             showToast(getString(R.string.input_error))

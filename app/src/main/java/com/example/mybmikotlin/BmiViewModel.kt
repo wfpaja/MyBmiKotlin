@@ -67,6 +67,8 @@ class BmiViewModel(private val infoDao: InfoDao): ViewModel() {
         val ids = selectedSet.toList()
         viewModelScope.launch {
             infoDao.deleteByIds(ids)
+            selectedSet.clear()
+            selectedCount.value = 0
         }
     }
 

@@ -8,6 +8,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
 import com.example.mybmikotlin.data.Info
+import com.example.mybmikotlin.data.getDoubleFormatText
 import com.example.mybmikotlin.databinding.ModifyInfoDialogBinding
 
 class ModifyInfoDialogFragment(private val info: Info, private val viewModel: BmiViewModel): DialogFragment() {

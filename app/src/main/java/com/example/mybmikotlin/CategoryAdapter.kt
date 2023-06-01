@@ -21,7 +21,7 @@ class CategoryAdapter(private val activity: AppCompatActivity, private val viewM
             binding.apply {
                 tvCategory.text = String.format(data.titleText, data.infoList.size)
                 rvMemberList.adapter = adapter
-                adapter.setData(data.infoList)
+                adapter.submitList(data.infoList)
             }
         }
     }

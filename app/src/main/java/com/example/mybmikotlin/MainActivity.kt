@@ -41,7 +41,6 @@ class MainActivity : AppCompatActivity() {
     private fun btnInit() {
         binding.apply {
             btnBmi.setOnClickListener {
-                hideKeyboard()
                 checkValidAndSend()
             }
             btnClear.setOnClickListener {
@@ -70,15 +69,16 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun hideKeyboard() {
-        val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
-        manager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
-    }
-
     private fun processingList(adapter: CategoryAdapter, category: Category,infoList: List<Info> ) {
+        hideKeyboard()
         adapter.update(category, infoList)
         countMap[category] = infoList.size
         binding.btnDeleteAll.isEnabled = countMap.values.sum() > 0
+    }
+
+    private fun hideKeyboard() {
+        val manager = getSystemService(INPUT_METHOD_SERVICE) as InputMethodManager
+        manager.hideSoftInputFromWindow(currentFocus?.windowToken, 0)
     }
 
     private fun checkValidAndSend(){

@@ -17,6 +17,5 @@ data class Info (
     val weight: Double,
     @ColumnInfo("bmi")
     val bmi: Double
-) {
-    fun getDoubleFormatText(value: Double): String = DecimalFormat("0.##").format(value)
-}
+)
+fun Info.getDoubleFormatText(value: Double): String = DecimalFormat("0.##").format(value)

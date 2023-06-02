@@ -62,7 +62,7 @@ class ModifyInfoDialogFragment(private val info: Info, private val viewModel: Bm
             val height = binding.etModifyHeight.text.toString().toDouble()
             val weight = binding.etModifyWeight.text.toString().toDouble()
 
-            if (height != 0.0 && weight != 0.0) {
+            if (height >= 1 && weight >= 1) {
                 return Triple(true, height, weight)
             } else {
                 showToast(getString(R.string.input_condition))
